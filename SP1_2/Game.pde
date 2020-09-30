@@ -12,6 +12,8 @@ class Game
   private Enemy[] enemies;
   private ExtraLife[] extraLives;
   private CollisionChecker collisionChecker;
+  //
+
 
 
   Game(int width, int height, int numberOfEnemies, int numberOfExtraLife)
@@ -32,9 +34,9 @@ class Game
     keys = new Keys();
     collisionChecker = new CollisionChecker();
     Dot playerDotP1 = new Dot(00, 00, width-1, height-1);   
-    Dot playerDotP2 = new Dot(15, 15, width-1, height-1); 
-    player1 = new Player(100, playerDotP1);
-    player2 = new Player(100, playerDotP2);
+    Dot playerDotP2 = new Dot(24, 00, width-1, height-1); 
+    player1 = new Player(100, playerDotP1, true);
+    player2 = new Player(100, playerDotP2, false);
     enemies= new Enemy[numberOfEnemies];
     for (int i = 0; i < numberOfEnemies; ++i) 
     {
@@ -74,34 +76,22 @@ class Game
   {
     keys.onKeyPressed(as);
   }
-
   public void onKeyReleased(char as)
   {
     keys.onKeyReleased(as);
   }
 
 
-  public void onKeyReleased(keyCode a)
-  {
-    keys.onKeyPressed(a);
-  }
-
-  public void onKeyReleased(keyCode a)
-  {
-    keys.onKeyReleased(a);
-  }
-  
 
   public void update()
   {
 
     //if (!gameover) {
-    player1.updatePlayer1(keys);
-    player2.updatePlayer2(keys);
+    player1.updatePlayer(keys);
+    player2.updatePlayer(keys);
     updateEnemies();
     updateExtraLives();
-    // updateSecondPlayer();
-    collisionChecker.checkForCollision(enemies, extraLives, player1);
+    collisionChecker.checkForCollision(enemies, extraLives, player1, player2);
     clearBoard();
     populateBoard();
   }
@@ -129,13 +119,14 @@ class Game
   private void updateEnemies() {
     for (int i = 0; i < enemies.length; ++i)
     {
-      enemies[i].updateEnemy(rnd, player1);
+      enemies[i].updateEnemy(rnd, player1, player2);
     }
   }
 
   private void updateExtraLives() {
     for (int i = 0; i < extraLives.length; ++i)
     {
+      extraLives[i].updateExtraLife(rnd, player1);
       extraLives[i].updateExtraLife(rnd, player1);
     }
   }
@@ -156,5 +147,4 @@ class Game
       board[extraLives[i].getX()][extraLives[i].getY()] = 3;
     }
   }
-
-  }
+}

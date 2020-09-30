@@ -2,13 +2,21 @@ class Player {
 
   private Dot dot;
   private int life;
+  private boolean playerOne;
 
-  public Player(int life, Dot dot) {
+  public Player(int life, Dot dot, boolean playerOne) {
     this.life = life;
     this.dot = dot;
+    this.playerOne = playerOne;
   }
 
-
+ public Dot getDot()
+ {
+   return dot;
+   
+ }
+ 
+ 
   public int getX() {
     return dot.x;
   }
@@ -32,19 +40,17 @@ class Player {
       this.life = life - x;
     }
   }
-  public void updatePlayer1(Keys keys)
+  public void updatePlayer(Keys keys)
   {
     if (life > 0) {
-      updateMovementP1(keys);
+      if (playerOne){
+        updateMovementP1(keys);
+      } else {
+        updateMovementP2(keys);
+      }
     }
   }
-  public void updatePlayer2(Keys keys)
-  {
-    if (life > 0) {
-      updateMovementP2(keys);
-    }
-  }
-
+ 
   private void updateMovementP1(Keys keys) {
 
     if (keys.wDown() && !keys.sDown())
@@ -67,19 +73,20 @@ class Player {
 
   private void updateMovementP2(Keys keys) {
 
-    if (keys.UpDown() && !keys.UpDown())
+
+    if (keys.UpDown() && !keys.DownDown())
     {
       dot.moveUp();
     }
-    if (keys.LeftDown() && !keys.LeftDown())
+    if (keys.LeftDown() && !keys.RightDown())
     {
       dot.moveLeft();
     }
-    if (keys.DownDown() && !keys.DownDown())
+    if (keys.DownDown() && !keys.UpDown())
     {
       dot.moveDown();
     }
-    if (keys.RightDown() && !keys.RightDown())
+    if (keys.RightDown() && !keys.LeftDown())
     {
       dot.moveRight();
     }
